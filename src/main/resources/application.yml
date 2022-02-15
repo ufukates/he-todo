@@ -1,0 +1,14 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  couchbase:
+    connection-string: ${COUCHBASE_CONNECTION_STRING:couchbase://localhost:11210}
+    username: ${COUCHBASE_USERNAME:he_user}
+    password: ${COUCHBASE_PASSWORD:asd123}
+  data:
+    couchbase:
+      bucket-name: ${COUCHBASE_BUCKET:hepsiemlak}
+      auto-index: true
