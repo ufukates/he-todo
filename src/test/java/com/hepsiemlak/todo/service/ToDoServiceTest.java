@@ -171,7 +171,7 @@ public class ToDoServiceTest {
         final Optional<TodoItem> optionalTodoItemWithId = Optional.of(todoItemWithId);
 
         //When
-        Mockito.when(toDoItemRepository.findByTodoIdAndId(todoId, updateToDoItemRequest.getId())).thenReturn(optionalTodoItemWithId);
+        Mockito.when(toDoItemRepository.findById(updateToDoItemRequest.getId())).thenReturn(optionalTodoItemWithId);
         Mockito.when(toDoItemRepository.save(todoItem)).thenReturn(todoItemWithId);
         ToDoItemResponse actualResponse = toDoService.updateToDoItem(todoId, updateToDoItemRequest);
 

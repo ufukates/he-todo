@@ -17,6 +17,4 @@ import java.util.Optional;
 public interface ToDoItemRepository extends CouchbaseRepository<TodoItem, String>, DynamicProxyable<ToDoItemRepository> {
 
     List<TodoItem> getTodoItemsByTodoId(String todoId);
-
-    Optional<TodoItem> findByTodoIdAndId(String todoId, String Id);
 }

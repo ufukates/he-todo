@@ -92,9 +92,9 @@ public class ToDoService {
     }
 
     public ToDoItemResponse updateToDoItem(String todoId, UpdateToDoItemRequest updateToDoItemRequest) {
-        TodoItem todoItem = toDoItemRepository.findByTodoIdAndId(todoId, updateToDoItemRequest.getId()).orElse(null);
+        TodoItem todoItem = toDoItemRepository.findById(updateToDoItemRequest.getId()).orElse(null);
 
-        if (todoItem == null) {
+        if (todoItem == null || (todoItem != null && !todoItem.getTodoId().equals(todoId))) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
