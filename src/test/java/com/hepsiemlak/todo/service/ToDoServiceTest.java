@@ -2,6 +2,8 @@ package com.hepsiemlak.todo.service;
 
 import com.hepsiemlak.todo.domain.dto.request.CreateToDoItemRequest;
 import com.hepsiemlak.todo.domain.dto.request.CreateToDoRequest;
+import com.hepsiemlak.todo.domain.dto.request.UpdateToDoItemRequest;
+import com.hepsiemlak.todo.domain.dto.request.UpdateToDoRequest;
 import com.hepsiemlak.todo.domain.dto.response.ToDoItemResponse;
 import com.hepsiemlak.todo.domain.dto.response.ToDoResponse;
 import com.hepsiemlak.todo.domain.model.Todo;
@@ -14,8 +16,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.hepsiemlak.todo.util.ToDoServiceUtil.getCreateToDoItemRequest;
 import static com.hepsiemlak.todo.util.ToDoServiceUtil.getCreateToDoRequest;
@@ -29,6 +33,10 @@ import static com.hepsiemlak.todo.util.ToDoServiceUtil.getTodoResponse;
 import static com.hepsiemlak.todo.util.ToDoServiceUtil.getTodoWithId;
 import static com.hepsiemlak.todo.util.ToDoServiceUtil.getTodos;
 import static com.hepsiemlak.todo.util.ToDoServiceUtil.getTodosResponse;
+import static com.hepsiemlak.todo.util.ToDoServiceUtil.getUpdateToDoItemRequest;
+import static com.hepsiemlak.todo.util.ToDoServiceUtil.getUpdateToDoRequest;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class ToDoServiceTest {
@@ -79,6 +87,41 @@ public class ToDoServiceTest {
     }
 
     @Test
+    public void should_updateToDo() {
+        //Given
+        final Todo todoWithId = getTodoWithId();
+        todoWithId.setTitle("title update");
+        final Optional<Todo> optionalTodoWithId = Optional.of(todoWithId);
+        final ToDoResponse toDoResponse = getTodoResponse();
+        final UpdateToDoRequest updateToDoRequest = getUpdateToDoRequest();
+        toDoResponse.setTitle(updateToDoRequest.getTitle());
+
+        //When
+        Mockito.when(toDoRepository.findById(updateToDoRequest.getId())).thenReturn(optionalTodoWithId);
+        Mockito.when(toDoRepository.save(todoWithId)).thenReturn(todoWithId);
+        ToDoResponse actualResponse = toDoService.updateToDo(updateToDoRequest);
+
+        //Then
+        Assertions.assertEquals(toDoResponse.getId(), actualResponse.getId());
+        Assertions.assertEquals(toDoResponse.getTitle(), actualResponse.getTitle());
+    }
+
+    @Test
+    public void should_returnNotFound_updateToDo() {
+        //Given
+        final String message = "404 NOT_FOUND";
+        final UpdateToDoRequest updateToDoRequest = getUpdateToDoRequest();
+
+        //When
+        Exception exception = assertThrows(ResponseStatusException.class, () -> {
+            toDoService.updateToDo(updateToDoRequest);
+        });
+
+        //Then
+        assertTrue(message.contains(exception.getMessage()));
+    }
+
+    @Test
     public void should_getTodoItemsWithTodoId() {
         //Given
         final String todoId = "todoId";
@@ -108,5 +151,47 @@ public class ToDoServiceTest {
 
         //Then
         Assertions.assertEquals(toDoItemResponse, actualResponse);
+    }
+
+    @Test
+    public void should_updateToDoItem() {
+        //Given
+        final String todoId = "todoId";
+        final TodoItem todoItem = getTodoItem();
+        final TodoItem todoItemWithId = getTodoItemWithId();
+        final ToDoItemResponse toDoItemResponse = getToDoItemResponse();
+        final UpdateToDoItemRequest updateToDoItemRequest = getUpdateToDoItemRequest();
+        todoItem.setId(todoItemWithId.getId());
+        todoItem.setTitle(updateToDoItemRequest.getTitle());
+        todoItem.setStatus(updateToDoItemRequest.getStatus());
+        todoItemWithId.setTitle(updateToDoItemRequest.getTitle());
+        todoItemWithId.setStatus(updateToDoItemRequest.getStatus());
+        toDoItemResponse.setTitle(updateToDoItemRequest.getTitle());
+        toDoItemResponse.setStatus(updateToDoItemRequest.getStatus());
+        final Optional<TodoItem> optionalTodoItemWithId = Optional.of(todoItemWithId);
+
+        //When
+        Mockito.when(toDoItemRepository.findByTodoIdAndId(todoId, updateToDoItemRequest.getId())).thenReturn(optionalTodoItemWithId);
+        Mockito.when(toDoItemRepository.save(todoItem)).thenReturn(todoItemWithId);
+        ToDoItemResponse actualResponse = toDoService.updateToDoItem(todoId, updateToDoItemRequest);
+
+        //Then
+        Assertions.assertEquals(toDoItemResponse, actualResponse);
+    }
+
+    @Test
+    public void should_returnNotFound_updateToDoItem() {
+        //Given
+        final String message = "404 NOT_FOUND";
+        final String todoId = "todoId";
+        final UpdateToDoItemRequest updateToDoItemRequest = getUpdateToDoItemRequest();
+
+        //When
+        Exception exception = assertThrows(ResponseStatusException.class, () -> {
+            toDoService.updateToDoItem(todoId, updateToDoItemRequest);
+        });
+
+        //Then
+        assertTrue(message.contains(exception.getMessage()));
     }
 }

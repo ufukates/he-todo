@@ -2,6 +2,8 @@ package com.hepsiemlak.todo.util;
 
 import com.hepsiemlak.todo.domain.dto.request.CreateToDoItemRequest;
 import com.hepsiemlak.todo.domain.dto.request.CreateToDoRequest;
+import com.hepsiemlak.todo.domain.dto.request.UpdateToDoItemRequest;
+import com.hepsiemlak.todo.domain.dto.request.UpdateToDoRequest;
 import com.hepsiemlak.todo.domain.dto.response.ToDoItemResponse;
 import com.hepsiemlak.todo.domain.dto.response.ToDoResponse;
 import com.hepsiemlak.todo.domain.model.Todo;
@@ -64,6 +66,13 @@ public class ToDoServiceUtil {
                 .build();
     }
 
+    public static UpdateToDoRequest getUpdateToDoRequest() {
+        return UpdateToDoRequest.builder()
+                .id("id")
+                .title("title update")
+                .build();
+    }
+
     public static ToDoItemResponse getToDoItemResponse() {
         return ToDoItemResponse.builder()
                 .id("id")
@@ -123,6 +132,14 @@ public class ToDoServiceUtil {
     public static CreateToDoItemRequest getCreateToDoItemRequest(){
         return CreateToDoItemRequest.builder()
                 .title("title")
+                .build();
+    }
+
+    public static UpdateToDoItemRequest getUpdateToDoItemRequest(){
+        return UpdateToDoItemRequest.builder()
+                .id("id")
+                .title("title update")
+                .status(true)
                 .build();
     }
 }

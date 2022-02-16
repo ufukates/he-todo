@@ -9,6 +9,7 @@ import org.springframework.data.couchbase.repository.ScanConsistency;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository("todoItemRepository")
 @Collection("todoItems")
@@ -16,4 +17,6 @@ import java.util.List;
 public interface ToDoItemRepository extends CouchbaseRepository<TodoItem, String>, DynamicProxyable<ToDoItemRepository> {
 
     List<TodoItem> getTodoItemsByTodoId(String todoId);
+
+    Optional<TodoItem> findByTodoIdAndId(String todoId, String Id);
 }

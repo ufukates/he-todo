@@ -1,7 +1,6 @@
 package com.hepsiemlak.todo.service;
 
 import com.hepsiemlak.todo.domain.dto.response.TokenResponse;
-import com.hepsiemlak.todo.domain.enums.UserType;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -11,6 +10,7 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+
 import java.security.KeyPair;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -39,7 +39,6 @@ public class TokenService {
     private SignedJWT getSignedJwt(String email, JWSSigner signer, String tokenId) throws JOSEException {
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                 .subject(email)
-                .claim("scope", UserType.USER.getAuthority())
                 .expirationTime(Date.from(Instant.now().plus(tokenExpirationTime, ChronoUnit.SECONDS)))
                 .jwtID(tokenId)
                 .issueTime(new Date())

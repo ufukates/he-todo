@@ -2,6 +2,8 @@ package com.hepsiemlak.todo.controller;
 
 import com.hepsiemlak.todo.domain.dto.request.CreateToDoItemRequest;
 import com.hepsiemlak.todo.domain.dto.request.CreateToDoRequest;
+import com.hepsiemlak.todo.domain.dto.request.UpdateToDoItemRequest;
+import com.hepsiemlak.todo.domain.dto.request.UpdateToDoRequest;
 import com.hepsiemlak.todo.domain.dto.response.ToDoItemResponse;
 import com.hepsiemlak.todo.domain.dto.response.ToDoResponse;
 import com.hepsiemlak.todo.service.AppUserService;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,6 +42,12 @@ public class ToDoController {
         return ResponseEntity.ok(todo);
     }
 
+    @PutMapping
+    public ResponseEntity<ToDoResponse> updateToDo(@Valid @RequestBody UpdateToDoRequest updateToDoRequest) {
+        ToDoResponse todo = toDoService.updateToDo(updateToDoRequest);
+        return ResponseEntity.ok(todo);
+    }
+
     @GetMapping("/{todoId}/items")
     public ResponseEntity<List<ToDoItemResponse>> todoItems(@PathVariable("todoId") String todoId) {
         List<ToDoItemResponse> todoItems = toDoService.getTodoItemsWithTodoId(todoId);
@@ -48,6 +57,12 @@ public class ToDoController {
     @PostMapping("/{todoId}/items")
     public ResponseEntity<ToDoItemResponse> createToDoItem(@PathVariable("todoId") String todoId, @Valid @RequestBody CreateToDoItemRequest createToDoItemRequest) {
         ToDoItemResponse todo = toDoService.createToDoItem(todoId, createToDoItemRequest);
+        return ResponseEntity.ok(todo);
+    }
+
+    @PutMapping("/{todoId}/items")
+    public ResponseEntity<ToDoItemResponse> updateToDoItem(@PathVariable("todoId") String todoId, @Valid @RequestBody UpdateToDoItemRequest updateToDoItemRequest) {
+        ToDoItemResponse todo = toDoService.updateToDoItem(todoId, updateToDoItemRequest);
         return ResponseEntity.ok(todo);
     }
 }

@@ -10,5 +10,5 @@ spring:
     password: ${COUCHBASE_PASSWORD:asd123}
   data:
     couchbase:
-      bucket-name: ${COUCHBASE_BUCKET:hepsiemlak}
+      bucket-name: ${COUCHBASE_BUCKET:hebucket}
       auto-index: true
