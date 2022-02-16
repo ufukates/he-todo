@@ -1,5 +1,5 @@
-# HepsiEmlak TO-DO
-- App for Software Engineer Assessment
+# HE TO-DO
+- TODO app
 
 ### Developed With
 - Java `1.8`
@@ -21,14 +21,14 @@ mvn clean verify
 ## Before Application Run
 ```
 Install Couchbase.
-docker run -d --name hepsi-emlak-cb -p 8091-8096:8091-8096 -p 11210-11211:11210-11211 couchbase
+docker run -d --name he-cb -p 8091-8096:8091-8096 -p 11210-11211:11210-11211 couchbase
 ```
 
 ### After run couchbase on docker
 `Visit http://localhost:8091 on browser.`
 - Setup new Cluster.
 ```
-Cluster Name: hepsiemlak
+Cluster Name: hecluster
 Create Admin Username: Administrator
 Create Password: admin1234
 Confirm Password: admin1234
@@ -36,7 +36,7 @@ Confirm Password: admin1234
 - Create Bucket.
 ```
 Click: Bucket > Add Bucket for Add Data Bucket.
-Name: hepsiemlak
+Name: hebucket
 ```
 - Create User
 ```
@@ -56,9 +56,9 @@ PS: Repeat this for each collection we need. (users, todos, todoItems)
 - Create Index for collections.
 ```
 Click: Query (execute below queries in query editor)
-CREATE PRIMARY INDEX ON `default`:`hepsiemlak`.`_default`.`users` USING GSI;
-CREATE PRIMARY INDEX ON `default`:`hepsiemlak`.`_default`.`todos` USING GSI;
-CREATE PRIMARY INDEX ON `default`:`hepsiemlak`.`_default`.`todoItems` USING GSI;
+CREATE PRIMARY INDEX ON `default`:`hebucket`.`_default`.`users` USING GSI;
+CREATE PRIMARY INDEX ON `default`:`hebucket`.`_default`.`todos` USING GSI;
+CREATE PRIMARY INDEX ON `default`:`hebucket`.`_default`.`todoItems` USING GSI;
 ```
 
 ### After configure couchbase
@@ -74,7 +74,7 @@ spring:
     password: ${COUCHBASE_PASSWORD:asd123}
   data:
     couchbase:
-      bucket-name: ${COUCHBASE_BUCKET:hepsiemlak}
+      bucket-name: ${COUCHBASE_BUCKET:hebucket}
       auto-index: true
 ```
 
