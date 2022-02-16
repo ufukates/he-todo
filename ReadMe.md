@@ -45,7 +45,7 @@ Username: he_user
 Fullname: he_user
 Password: asd123
 Verify Password: asd123
-Roles: Click Bucket > Application Access > Select Bucket > Add > Save Changes (hepsiemlak for our case)
+Roles: Click Bucket > Application Access > Select Bucket > Add > Save Changes (hebucket for our case)
 ```
 - Create Collection to Bucket for our datas.(users, todos, todoItems)
 ```
